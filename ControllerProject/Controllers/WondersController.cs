@@ -7,15 +7,16 @@ using ControllerProject.Models;
 
 namespace ControllerProject.Controllers
 {
+
     [ApiController]
     [Route("[controller]")]
-    public class NamesController : ControllerBase
+    public class WondersController : Controller
     {
-        private readonly ILogger<NamesController> _logger;
+        private readonly ILogger<WondersController> _logger;
 
-        private readonly INameContextDAO _context;
+        private readonly IWonderContextDAO _context;
 
-        public NamesController(ILogger<NamesController> logger, INameContextDAO context)
+        public WondersController(ILogger<WondersController> logger, IWonderContextDAO context)
         {
             _logger = logger;
             _context = context;
@@ -24,27 +25,24 @@ namespace ControllerProject.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_context.GetAllTeams());
+            return Ok(_context.GetAllWonders());
         }
 
         [HttpGet("id")]
-        public IActionResult GetById(int id)
+        public IActionResult Get(int id)
         {
-            var team = _context.GetTeam(id);
-            if (team == null)
+            var wonder = _context.GetWonder(id);
+            if (wonder == null)
             {
                 return NotFound(id);
             }
-            else
-            {
-                return Ok(team);
-            }
+            return Ok(wonder);
         }
 
         [HttpDelete]
         public IActionResult Delete(int id)
         {
-            var result = _context.RemoveTeam(id);
+            var result = _context.RemoveWonder(id);
 
             if (result == null)
             {
@@ -58,13 +56,13 @@ namespace ControllerProject.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put(Names name)
+        public IActionResult Put(Wonders wonder)
         {
-            var result = _context.UpdateName(name);
+            var result = _context.UpdateWonder(wonder);
 
             if (result == null)
             {
-                return NotFound(name.Id);
+                return NotFound(wonder.Id);
             }
             if (result == 0)
             {
@@ -72,11 +70,11 @@ namespace ControllerProject.Controllers
             }
             return Ok();
         }
-        
+
         [HttpPost]
-        public IActionResult Post(Names name)
+        public IActionResult Post(Wonders wonder)
         {
-            var result = _context.Add(name);
+            var result = _context.Add(wonder);
             if (result == null)
             {
                 return (StatusCode(500, "Name already exist"));

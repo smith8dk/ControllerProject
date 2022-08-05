@@ -15,9 +15,9 @@ namespace ControllerProject.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Names>().HasData(
-                new Names { Id = 1, FirstName = "Dakota", LastName = "Smith" },
-                new Names { Id = 2, FirstName = "John", LastName = "Newman" },
-                new Names { Id = 3, FirstName = "Bob", LastName = "Davis" });
+                new Names { Id = 1, FullName = "Dakota Smith", Birthdate = new DateTime(2002, 09, 26), CollegeProgram = "IT", Year = "Sophmore" },
+                new Names { Id = 2, FullName = "Jack Newman", Birthdate = new DateTime(2003, 02, 02), CollegeProgram = "Computer Science", Year = "Freshman" },
+                new Names { Id = 3, FullName = "Bob Davis", Birthdate = new DateTime(2000, 11, 21), CollegeProgram = "Art", Year = "Senior" });
         }
         public DbSet<Names> Names { get; set; }
 

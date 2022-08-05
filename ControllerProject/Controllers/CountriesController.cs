@@ -9,13 +9,13 @@ namespace ControllerProject.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class NamesController : ControllerBase
+    public class CountriesController : ControllerBase
     {
-        private readonly ILogger<NamesController> _logger;
+        private readonly ILogger<CountriesController> _logger;
 
-        private readonly INameContextDAO _context;
+        private readonly ICountryContextDAO _context;
 
-        public NamesController(ILogger<NamesController> logger, INameContextDAO context)
+        public CountriesController(ILogger<CountriesController> logger, ICountryContextDAO context)
         {
             _logger = logger;
             _context = context;
@@ -24,27 +24,24 @@ namespace ControllerProject.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_context.GetAllTeams());
+            return Ok(_context.GetAllCountries());
         }
 
         [HttpGet("id")]
-        public IActionResult GetById(int id)
+        public IActionResult Get(int id)
         {
-            var team = _context.GetTeam(id);
-            if (team == null)
+            var country = _context.GetCountry(id);
+            if (country == null)
             {
                 return NotFound(id);
             }
-            else
-            {
-                return Ok(team);
-            }
+            return Ok(country);
         }
 
         [HttpDelete]
         public IActionResult Delete(int id)
         {
-            var result = _context.RemoveTeam(id);
+            var result = _context.RemoveCountry(id);
 
             if (result == null)
             {
@@ -58,13 +55,13 @@ namespace ControllerProject.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put(Names name)
+        public IActionResult Put(Countries country)
         {
-            var result = _context.UpdateName(name);
+            var result = _context.UpdateCountry(country);
 
             if (result == null)
             {
-                return NotFound(name.Id);
+                return NotFound(country.Id);
             }
             if (result == 0)
             {
@@ -72,14 +69,14 @@ namespace ControllerProject.Controllers
             }
             return Ok();
         }
-        
+
         [HttpPost]
-        public IActionResult Post(Names name)
+        public IActionResult Post(Countries country)
         {
-            var result = _context.Add(name);
+            var result = _context.Add(country);
             if (result == null)
             {
-                return (StatusCode(500, "Name already exist"));
+                return (StatusCode(500, "Country already exist"));
             }
             else if (result == 0)
             {

@@ -9,13 +9,13 @@ namespace ControllerProject.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class NamesController : ControllerBase
+    public class UCMajorController : ControllerBase
     {
-        private readonly ILogger<NamesController> _logger;
+        private readonly ILogger<UCMajorController> _logger;
 
-        private readonly INameContextDAO _context;
+        private readonly IMajorContextDAO _context;
 
-        public NamesController(ILogger<NamesController> logger, INameContextDAO context)
+        public UCMajorController(ILogger<UCMajorController> logger, IMajorContextDAO context)
         {
             _logger = logger;
             _context = context;
@@ -24,27 +24,24 @@ namespace ControllerProject.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_context.GetAllTeams());
+            return Ok(_context.GetAllMajors());
         }
 
         [HttpGet("id")]
-        public IActionResult GetById(int id)
+        public IActionResult Get(int id)
         {
-            var team = _context.GetTeam(id);
-            if (team == null)
+            var major = _context.GetMajor(id);
+            if (major == null)
             {
                 return NotFound(id);
             }
-            else
-            {
-                return Ok(team);
-            }
+            return Ok(major);
         }
 
         [HttpDelete]
         public IActionResult Delete(int id)
         {
-            var result = _context.RemoveTeam(id);
+            var result = _context.RemoveMajor(id);
 
             if (result == null)
             {
@@ -58,13 +55,13 @@ namespace ControllerProject.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put(Names name)
+        public IActionResult Put(UCMajors major)
         {
-            var result = _context.UpdateName(name);
+            var result = _context.UpdateMajor(major);
 
             if (result == null)
             {
-                return NotFound(name.Id);
+                return NotFound(major.Id);
             }
             if (result == 0)
             {
@@ -72,14 +69,14 @@ namespace ControllerProject.Controllers
             }
             return Ok();
         }
-        
+
         [HttpPost]
-        public IActionResult Post(Names name)
+        public IActionResult Post(UCMajors major)
         {
-            var result = _context.Add(name);
+            var result = _context.Add(major);
             if (result == null)
             {
-                return (StatusCode(500, "Name already exist"));
+                return (StatusCode(500, "Major already exist"));
             }
             else if (result == 0)
             {
